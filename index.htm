@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<title>SGC - CCR</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+<style>
+html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
+<body class="w3-light-grey" onload="hide_views(); display_element_by_id('resumo'); add_class_by_id('resumo-item')">
+
+<!-- Top container -->
+<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
+  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <span class="w3-bar-item w3-right"><a href="http://www.grupoccr.com.br/" target="_blank" style="text-decoration: none;"> CCR</a></span>
+</div>
+
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container w3-row">
+    <div class="w3-col s4">
+      <img src="images/avatar1.png" class="w3-circle w3-margin-right" style="width:46px">
+    </div>
+    <div class="w3-col s8 w3-bar">
+      <span>Bem-vinda, <strong>Joana</strong></span><br>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-cog"></i></a>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Painel de Controle</h5>
+  </div>
+  <div class="w3-bar-block">
+    <a href="#" class="w3-bar-item w3-button w3-padding-16 w3-hide-large w3-dark-grey w3-hover-black" onclick="w3_close()" title="close menu"><i class="fa fa-remove fa-fw"></i>  Fechar Menu</a>
+    <a href="#" id="resumo-item" class="w3-bar-item w3-button w3-padding w3-blue" name="menu-item" onclick="hide_views(); display_element_by_id('resumo'); add_class_by_id('resumo-item')"><i class="fa fa-users fa-fw"></i>  Resumo</a>
+    <a href="#mapa" id="mapa-item" class="w3-bar-item w3-button w3-padding" name="menu-item" onclick="hide_views(); display_element_by_id('mapa'); add_class_by_id('mapa-item')"><i class="fa fa-bullseye fa-fw"></i>  Mapa</a>
+    <a href="#clientes" id="clientes-item" class="w3-bar-item w3-button w3-padding" name="menu-item" onclick="hide_views(); display_element_by_id('clientes'); add_class_by_id('clientes-item')"><i class="fa fa-users fa-fw"></i>  Caminhoneiros</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding" name="menu-item"><i class="fa fa-eye fa-fw"></i>  Relatórios</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding" name="menu-item"><i class="fa fa-diamond fa-fw"></i>  Links úteis</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding" name="menu-item"><i class="fa fa-bell fa-fw"></i>  Notificações</a>
+    <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-bank fa-fw"></i>  General</a> -->
+    <!-- <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i>  Histórico</a> -->
+    <a href="#" class="w3-bar-item w3-button w3-padding" name="menu-item"><i class="fa fa-cog fa-fw"></i>  Configurações</a><br><br>
+  </div>
+</nav>
+
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:22px">
+    <h5><b><i class="fa fa-dashboard"></i> Sistema de Gestão de Caminhoneiros</b></h5>
+  </header>
+
+  <!-- Resumo -->
+  <div id="resumo" name="view" class="w3-row-padding w3-margin-bottom">
+    <div class="w3-quarter">
+      <div class="w3-container w3-red w3-padding-16">
+        <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>52</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Mensagens</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-blue w3-padding-16">
+        <div class="w3-left"><i class="fa fa-eye w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>99</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Visualizações</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-teal w3-padding-16">
+        <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>23</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Compartilhamentos</h4>
+      </div>
+    </div>
+    <div class="w3-quarter">
+      <div class="w3-container w3-orange w3-text-white w3-padding-16">
+        <div class="w3-left"><i class="fa fa-users w3-xxxlarge"></i></div>
+        <div class="w3-right">
+          <h3>50</h3>
+        </div>
+        <div class="w3-clear"></div>
+        <h4>Usuários</h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa -->
+  <div id="mapa" name="view" class="w3-container">
+    <br><br>
+    <div id="map" style="width:100%;height:500px;z-index:1;"></div>
+    <script>
+      var map = L.map('map').setView([-11.269731, -51.845140], 4);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      L.marker([-27.580064, -48.614246]).addTo(map)
+        .bindPopup('<h6><b>Relatório de Acidentes 2016-2018</b></h6>\
+          <b>Trecho:</b> BR-101/SC km 200-210<br>\
+          <b>Quantidade de acidentes graves:</b> 306<br>\
+          <b>Quantidade de mortos:</b> 30')
+        .openPopup();
+
+      L.marker([-27.629995, -48.659012]).addTo(map);
+      L.marker([-20.205957, -40.269385]).addTo(map);
+
+      L.marker([-3.743052, -38.614719]).addTo(map)
+        .bindPopup('<h6><b>Relatório de Acidentes 2016-2018</b></h6>\
+          <b>Trecho:</b> BR-222/CE km 0-10<br>\
+          <b>Quantidade de acidentes graves:</b> 218<br>\
+          <b>Quantidade de mortos:</b> 32');
+
+      L.marker([-1.380377, -48.397800]).addTo(map);
+      L.marker([-22.763082, -42.901575]).addTo(map);
+      L.marker([-20.342576, -40.401410]).addTo(map);
+      L.marker([-24.381868, -50.790061]).addTo(map);
+      L.marker([-19.481890, -40.117493]).addTo(map);
+      L.marker([-5.602222, -42.612198]).addTo(map);
+        
+      </script>
+  </div>
+
+  <!-- Caminhoneiros cadastrados -->
+  <div id="clientes" name="view" class="w3-container">
+    <h5>Caminhoneiros cadastrados</h5>
+    <ul class="w3-ul w3-card-4 w3-white">
+      <li class="w3-padding-16">
+        <img src="images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+        <span class="w3-xlarge">Pedro</span><br>
+      </li>
+      <li class="w3-padding-16">
+        <img src="images/avatar3.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+        <span class="w3-xlarge">Maria</span><br>
+      </li>
+      <li class="w3-padding-16">
+        <a href="#cadastro-saude" style="text-decoration: none;" onclick="hide_views(); 
+          display_element_by_id('cadastro-saude');
+          display_element_by_id('questionario')">
+        <img src="images/avatar4.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
+        <span class="w3-xlarge">Francisco</span></a><br>
+
+      </li>
+    </ul>
+  </div>
+
+  <!-- Cadastro de saúde -->
+  <div id="cadastro-saude" name="view" class="w3-container">
+    <br><br>
+    <h5>Cadastro de saúde</h5>
+    <div class="w3-row">
+      <div class="w3-col m2 text-center">
+        <img class="w3-circle" src="images/avatar4.png" style="width:96px;height:96px">
+      </div>
+      <div class="w3-col m10 w3-container">
+        <h4>Francisco <span class="w3-opacity w3-medium">Última atualização: 12/02/2020, 9:12 PM</span></h4>
+        <p><b>Idade:</b> 45 anos</p>
+        <p><b>Altura:</b> 1.70 m</p>
+        <p><b>Peso:</b> 80 kg</p><br>
+      </div>
+    </div>
+  </div>
+  <!-- Questionário de saúde SF-36 -->
+  <div id="questionario" name="view" class="w3-container">
+    <h5>Respostas do Questionário de Avaliação da Qualidade de Vida (SF-36)</h5>
+    <form>
+      <p><b>1. Em geral, você diria que sua saúde é:</b></p>
+      <input type="radio" name="p1"><label> Excelente</label><br>
+      <input type="radio" name="p1"><label> Muito boa</label><br>  
+      <input type="radio" name="p1" checked><label> Boa</label><br>
+      <input type="radio" name="p1"><label> Ruim</label><br>  
+      <input type="radio" name="p1"><label> Muito ruim</label><br>
+
+      <p><b>2. Comparada a um ano atrás, como você classificaria sua saúde em geral, agora?</b></p>
+      <input type="radio" name="p2"><label> Muito melhor agora do que a um ano atrás</label><br>
+      <input type="radio" name="p2"><label> Um pouco melhor agora do que a um ano atrás</label><br>  
+      <input type="radio" name="p2"><label> Quase a mesma de um ano atrás</label><br>
+      <input type="radio" name="p2" checked><label> Um pouco pior agora do que há um ano atrás</label><br>
+      <input type="radio" name="p2"><label> Muito pior agora do que há um ano atrás</label><br>
+
+      <p><b>3. Os seguintes itens são sobre atividades que você poderia fazer atualmente 
+        durante um dia comum. Devido a sua saúde, você tem dificuldade para fazer essas atividades? 
+        Neste caso, quanto?</b></p>
+      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+        <thead>
+          <tr>
+            <th>Atividades</th>
+            <th>Sim. Dificulta<br>muito</th>
+            <th>Sim. Dificulta<br>um pouco</th>
+            <th>Não. Não dificulta<br>de modo algum</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>a. Atividades vigorosas, que exigem muito esforço, tais como correr, levantar objetos
+              pesados, participar em esportes árduos</td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>b. Atividades moderadas, tais como mover uma mesa, passar aspirador de pó, jogar bola, varrer a casa</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>c. Levantar ou carregar mantimentos</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+          </tr>
+          <tr>
+            <td>d. Subir vários lances de escada</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>e. Subir um lance de escada</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+          </tr>
+          <tr>
+            <td>f. Curvar-se , ajoelhar-se ou dobrar-se</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>g. Andar mais de 1 quilômetro</td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>h. Andar vários quarteirões</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>i. Andar um quarteirão</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+          </tr>
+          <tr>
+            <td>j. Tomar banho ou vestir-se</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><b>4. Durante as últimas 4 semanas, você teve algum dos seguintes problemas com o seu
+        trabalho ou com alguma atividade diária regular, como consequência de sua saúde física?</b></p>
+      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Sim</th>
+            <th>Não</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>a. Você diminuiu a quantidade de tempo que se dedicava ao seu trabalho ou a outras atividades</td>
+            <td></td>
+            <td>X</td>
+          </tr>
+          <tr>
+            <td>b. Realizou menos tarefas do que você gostaria?</td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>c. Esteve limitado no seu tipo trabalho ou em outras atividades?</td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>d. Teve dificuldade de fazer seu trabalho ou outras atividades (p.ex: necessitou de um esforço extra)?</td>
+            <td>X</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><b>5. Durante as últimas 4 semanas, você teve algum dos seguintes problemas com o seu
+        trabalho ou outra atividade regular diária, como consequência de algum problema
+        emocional (como sentir-se deprimid@ ou ansios@)?</b></p>
+      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Sim</th>
+            <th>Não</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>a.Você diminuiu a quantidade de tempo que se dedicava ao seu trabalho ou a outras atividades?</td>
+            <td></td>
+            <td>X</td>
+          </tr>
+          <tr>
+            <td>b. Realizou menos tarefas do que você gostaria?</td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>c. Não trabalhou ou não fez qualquer das atividades com tanto cuidado como geralmente faz?</td>
+            <td></td>
+            <td>X</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><b>6. Durante as últimas 4 semanas, de que maneira sua saúde física ou problemas
+        emocionais interferiram nas suas atividades sociais normais,
+        em relação a família, vizinhos, amigos ou em grupo?</b></p>
+      <input type="radio" name="p6"><label> De forma nenhuma</label><br>
+      <input type="radio" name="p6"><label> Ligeiramente</label><br>  
+      <input type="radio" name="p6" checked><label> Moderadamente</label><br>
+      <input type="radio" name="p6"><label> Bastante</label><br>
+      <input type="radio" name="p6"><label> Extremamente</label><br>
+
+      <p><b>7. Quanta dor no corpo você teve durante as últimas 4 semanas?</b></p>
+      <input type="radio" name="p7"><label> Nenhuma</label><br>
+      <input type="radio" name="p7"><label> Muito leve</label><br>  
+      <input type="radio" name="p7"><label> Leve</label><br>
+      <input type="radio" name="p7" checked><label> Moderada</label><br>
+      <input type="radio" name="p7"><label> Grave</label><br>  
+      <input type="radio" name="p7"><label> Muito grave</label><br>
+
+      <p><b>8. Durante as últimas 4 semanas, quanto a dor interferiu com o seu trabalho normal
+        (incluindo tanto o trabalho, fora de casa e dentro de casa)?</b></p>
+      <input type="radio" name="p8"><label> De maneira alguma</label><br>
+      <input type="radio" name="p8" checked><label> Um pouco</label><br>  
+      <input type="radio" name="p8"><label> Moderadamente</label><br>
+      <input type="radio" name="p8"><label> Bastante</label><br>
+      <input type="radio" name="p8"><label> Extremamente</label><br>
+
+      <p><b>9. Estas questões são sobre como você se sente e como tudo tem acontecido com você
+        durante as últimas 4 semanas. Para cada questão, por favor dê uma resposta que mais
+        se aproxime da maneira como você se sente. Em relação as úlitmas 4 semanas.</b></p>
+      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Todo<br>tempo</th>
+            <th>A maior<br>parte do<br>tempo</th>
+            <th>Uma boa<br>parte do<br>tempo</th>
+            <th>Alguma<br>parte do<br>tempo</th>
+            <th>Uma<br>pequena<br>parte do<br>tempo</th>
+            <th>Nunca</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>a. Quanto tempo você tem se sentido cheio de vigor, cheio de vontade, cheio de força?</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>b. Quanto tempo você tem se sentido uma pessoa muito nervosa?</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>c. Quanto tempo você tem se sentido tão deprimido que nada pode animá-l@?</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>d. Quanto tempo você tem se sentido calm@ ou tranquil@?</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>e. Quanto tempo você tem se sentido com muita energia?</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>f. Quanto tempo você tem se sentido desanimad@ e abatid@?</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>g. Quanto tempo você tem se sentido esgotad@?</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>h. Quanto tempo você tem se sentido uma pessoa feliz?</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>i. Quanto tempo você tem se sentido cansad@?</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><b>10. Durante as últimas 4 semanas, quanto do seu tempo a sua saúde física ou
+        problemas emocionais interferiram com as suas atividades sociais (como visitar amigos,
+        parentes, etc.)?</b></p>  
+      <input type="radio" name="p10"><label> Todo o tempo</label><br>
+      <input type="radio" name="p10"><label> A maior parte do tempo</label><br>  
+      <input type="radio" name="p10" checked><label> Alguma parte do tempo</label><br>
+      <input type="radio" name="p10"><label> Um pequena parte do tempo</label><br>
+      <input type="radio" name="p10"><label> Nenhuma parte do tempo</label><br>
+
+      <p><b>11. O quanto verdadeiro ou falso é cada uma das afirmações para você?</b></p>
+      <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Definitivamente<br>verdadeiro</th>
+            <th>A maioria<br>das vezes<br>verdadeiro</th>
+            <th>Não sei</th>
+            <th>A maioria<br>das vezes<br>falsa</th>
+            <th>Definitivamente<br>falsa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>a. Eu costumo adoecer um pouco mais facilmente que as outras pessoas</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>b. Eu sou tão saudável quanto qualquer pessoa que eu conheço</td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>c. Eu acho que a minha saúde vai piorar</td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>d. Minha saúde é excelente</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </form>
+    <br>
+    <button class="w3-button w3-dark-grey">Ver resultados da avaliação  <i class="fa fa-arrow-right"></i></button>
+    <br><br><br>
+  </div>
+  <hr>
+
+  <!-- <div class="w3-panel">
+    <div class="w3-row-padding" style="margin:0 -16px">
+      <div class="w3-third">
+        <h5>Regions</h5>
+        <img src="/w3images/region.jpg" style="width:100%" alt="Google Regional Map">
+      </div>
+      <div class="w3-twothird">
+        <h5>Feeds</h5>
+        <table class="w3-table w3-striped w3-white">
+          <tr>
+            <td><i class="fa fa-user w3-text-blue w3-large"></i></td>
+            <td>New record, over 90 views.</td>
+            <td><i>10 mins</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-bell w3-text-red w3-large"></i></td>
+            <td>Database error.</td>
+            <td><i>15 mins</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-users w3-text-yellow w3-large"></i></td>
+            <td>New record, over 40 users.</td>
+            <td><i>17 mins</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-comment w3-text-red w3-large"></i></td>
+            <td>New comments.</td>
+            <td><i>25 mins</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-bookmark w3-text-blue w3-large"></i></td>
+            <td>Check transactions.</td>
+            <td><i>28 mins</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-laptop w3-text-red w3-large"></i></td>
+            <td>CPU overload.</td>
+            <td><i>35 mins</i></td>
+          </tr>
+          <tr>
+            <td><i class="fa fa-share-alt w3-text-green w3-large"></i></td>
+            <td>New shares.</td>
+            <td><i>39 mins</i></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>General Stats</h5>
+    <p>New Visitors</p>
+    <div class="w3-grey">
+      <div class="w3-container w3-center w3-padding w3-green" style="width:25%">+25%</div>
+    </div>
+
+    <p>New Users</p>
+    <div class="w3-grey">
+      <div class="w3-container w3-center w3-padding w3-orange" style="width:50%">50%</div>
+    </div>
+
+    <p>Bounce Rate</p>
+    <div class="w3-grey">
+      <div class="w3-container w3-center w3-padding w3-red" style="width:75%">75%</div>
+    </div>
+  </div>
+  <hr>
+  <div class="w3-container">
+    <h5>Recent Comments</h5>
+    <div class="w3-row">
+      <div class="w3-col m2 text-center">
+        <img class="w3-circle" src="images/avatar2.png" style="width:96px;height:96px">
+      </div>
+      <div class="w3-col m10 w3-container">
+        <h4>John <span class="w3-opacity w3-medium">Sep 29, 2014, 9:12 PM</span></h4>
+        <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
+      </div>
+    </div>
+
+    <div class="w3-row">
+      <div class="w3-col m2 text-center">
+        <img class="w3-circle" src="images/avatar2.png" style="width:96px;height:96px">
+      </div>
+      <div class="w3-col m10 w3-container">
+        <h4>Bo <span class="w3-opacity w3-medium">Sep 28, 2014, 10:15 PM</span></h4>
+        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="w3-container w3-dark-grey w3-padding-32">
+    <div class="w3-row">
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-green">Demographic</h5>
+        <p>Language</p>
+        <p>Country</p>
+        <p>City</p>
+      </div>
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-red">System</h5>
+        <p>Browser</p>
+        <p>OS</p>
+        <p>More</p>
+      </div>
+      <div class="w3-container w3-third">
+        <h5 class="w3-bottombar w3-border-orange">Target</h5>
+        <p>Users</p>
+        <p>Active</p>
+        <p>Geo</p>
+        <p>Interests</p>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- Footer -->
+  <footer class="w3-container w3-padding-16 w3-dark-grey" style="position:fixed; bottom:0; width:100%;">
+    <!-- <h4>Sistema de Gestão de Caminhoneiros</h4> -->
+    Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a>
+  </footer>
+
+  <!-- End page content -->
+</div>
+
+<script>
+// Get the Sidebar
+var mySidebar = document.getElementById("mySidebar");
+
+// Get the DIV with overlay effect
+var overlayBg = document.getElementById("myOverlay");
+
+// Toggle between showing and hiding the sidebar, and add overlay effect
+function w3_open() {
+  if (mySidebar.style.display === 'block') {
+    mySidebar.style.display = 'none';
+    overlayBg.style.display = "none";
+  } else {
+    mySidebar.style.display = 'block';
+    overlayBg.style.display = "block";
+  }
+}
+
+// Close the sidebar with the close button
+function w3_close() {
+  mySidebar.style.display = "none";
+  overlayBg.style.display = "none";
+}
+
+function hide_views() {
+  var x = document.getElementsByName("view");
+  var i;
+
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display='none';
+  }
+
+  x = document.getElementsByName("menu-item");
+
+  for (i = 0; i < x.length; i++) {
+    x[i].classList.remove("w3-blue");
+  }
+}
+
+function display_element_by_id(id) {
+  document.getElementById(id).style.display='block';
+}
+
+function add_class_by_id(id) {
+  document.getElementById(id).classList.add("w3-blue");
+}
+</script>
+
+</body>
+</html>
+
